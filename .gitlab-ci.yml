@@ -1,0 +1,59 @@
+image: $REPO_URL/stage
+
+stages:
+  - build
+  - test
+  - release
+
+variables:
+  DOCKER_HOST: tcp://localhost:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+
+default:
+  before_script:
+    - pip install -q --upgrade pip
+    - pip install -q $END_TO_END_LIB@$CI_COMMIT_REF_NAME || pip install -q $END_TO_END_LIB
+    - e2e init
+
+###############################################################
+# Build Stage (jobs inside a stage run in parallel)
+###############################################################
+
+dev-pypi:
+  stage: build
+  tags:
+    - stage-kube-newer
+  before_script:
+    - pip3 install -q --upgrade pip setuptools "twine<6.2" wheel build uv
+  script:
+    - SHORT_SHA=$(git rev-parse --short HEAD) uvx bump-my-version bump local --no-commit --no-tag --verbose
+    - python -m build
+    - twine upload --skip-existing --disable-progress-bar --non-interactive dist/*
+
+# ###############################################################
+# # Test Stage
+# ###############################################################
+tests:
+  stage: test
+  tags:
+    - stage-kube-newer
+  image: $REPO_URL/python:3.10-slim-buster
+  before_script:
+    - pip install uv
+    - uv pip install .[tests] --system
+  script:
+    - PYTHONPATH=. pytest
+
+###############################################################
+# Release Stage
+###############################################################
+release-pypi:
+  stage: release
+  tags:
+    - stage-kube-newer
+  script:
+    # release to internal pypi but do not tag yet
+    - pip3 install -q packaging
+    - e2e release --remote https://github.com/polyswarm/polyswarm_engine.git
