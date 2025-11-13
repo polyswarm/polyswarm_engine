@@ -55,5 +55,5 @@ release-pypi:
     - stage-kube-newer
   script:
     # release to internal pypi but do not tag yet
-    - pip3 install -q packaging
+    - pip3 install -q packaging setuptools
     - e2e release --remote https://github.com/polyswarm/polyswarm_engine.git
