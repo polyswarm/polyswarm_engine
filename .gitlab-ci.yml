@@ -42,10 +42,10 @@ test-run310:
     - stage-kube-newer
   image: $REPO_URL/python:3.10-slim-buster
   before_script:
-    - pip install -U pip uv
-    - uv pip install .[tests] --system
+    - pip install -U pip
+    - pip install .[tests]
   script:
-    - uv pip install -r requirements.txt --system
+    - pip install -r requirements.txt
     - PYTHONPATH=. pytest -s -v
 
 test-run311:
@@ -54,10 +54,10 @@ test-run311:
     - stage-kube-newer
   image: python:3.11
   before_script:
-    - pip install -U pip uv
-    - uv pip install .[tests] --system
+    - pip install -U pip
+    - pip install .[tests]
   script:
-    - uv pip install -r requirements.txt --system
+    - pip install -r requirements.txt
     - PYTHONPATH=. pytest -s -v
 
 test-run312:
@@ -66,10 +66,10 @@ test-run312:
     - stage-kube-newer
   image: python:3.12
   before_script:
-    - pip install -U pip uv
-    - uv pip install .[tests] --system
+    - pip install -U pip
+    - pip install .[tests]
   script:
-    - uv pip install -r requirements.txt --system
+    - pip install -r requirements.txt
     - PYTHONPATH=. pytest -s -v
 
 test-run313:
@@ -78,10 +78,10 @@ test-run313:
     - stage-kube-newer
   image: python:3.13
   before_script:
-    - pip install -U pip uv
-    - uv pip install .[tests] --system
+    - pip install -U pip
+    - pip install .[tests]
   script:
-    - uv pip install -r requirements.txt --system
+    - pip install -r requirements.txt
     - PYTHONPATH=. pytest -s -v
 
 test-run314:
@@ -90,10 +90,10 @@ test-run314:
     - stage-kube-newer
   image: python:3.14
   before_script:
-    - pip install -U pip uv
-    - uv pip install .[tests] --system
+    - pip install -U pip
+    - pip install .[tests]
   script:
-    - uv pip install -r requirements.txt --system
+    - pip install -r requirements.txt
     - PYTHONPATH=. pytest -s -v
 
 ###############################################################
