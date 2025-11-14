@@ -22,15 +22,17 @@ default:
 ###############################################################
 
 dev-pypi:
-  stage: build
   tags:
     - stage-kube-newer
+  stage: build
   before_script:
-    - pip3 install -q --upgrade pip setuptools "twine<6.2" wheel build uv
+    - pip3 install -q --upgrade pip build twine bump-my-version
+    - pip install -q $END_TO_END_LIB@$CI_COMMIT_REF_NAME || pip install -q $END_TO_END_LIB
+    - e2e init
   script:
-    - SHORT_SHA=$(git rev-parse --short HEAD) uvx bump-my-version bump local --no-commit --no-tag --verbose
+    - bump-my-version bump --no-commit --no-tag local
     - python -m build
-    - twine upload --skip-existing --disable-progress-bar --non-interactive dist/*
+    - e2e release --dev --skip-tag
 
 # ###############################################################
 # # Test Stage
@@ -99,17 +101,17 @@ test-run314:
 ###############################################################
 # Release Stage
 ###############################################################
+
 release-pypi:
-  stage: release
   tags:
     - stage-kube-newer
+  stage: release
   script:
-    - pip3 install -q packaging setuptools twine
     # release to internal pypi but do not tag yet
-    - e2e release --skip-tag --remote https://github.com/polyswarm/polyswarm_engine.git
+    - e2e release --skip-tag --remote https://github.com/polyswarm/$CI_PROJECT_NAME.git
     # release to public pypi and tag
     - e2e release
-      -u $PUBLIC_TWINE_USERNAME
-      -p $PUBLIC_TWINE_PASSWORD
-      -r $PUBLIC_TWINE_REPOSITORY_URL
-      --remote https://github.com/polyswarm/polyswarm_engine.git
+      -u "$PUBLIC_TWINE_USERNAME"
+      -p "$PUBLIC_TWINE_PASSWORD"
+      -r "$PUBLIC_TWINE_REPOSITORY_URL"
+      --remote "https://github.com/polyswarm/$CI_PROJECT_NAME.git"
