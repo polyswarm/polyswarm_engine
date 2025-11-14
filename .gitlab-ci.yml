@@ -112,4 +112,3 @@ release-pypi:
       -u $PUBLIC_TWINE_USERNAME
       -p $PUBLIC_TWINE_PASSWORD
       -r $PUBLIC_TWINE_REPOSITORY_URL
-      --remote https://github.com/polyswarm/polyswarm_engine.git
