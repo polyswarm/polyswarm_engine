@@ -35,16 +35,66 @@ dev-pypi:
 # ###############################################################
 # # Test Stage
 # ###############################################################
-tests:
+
+test-run310:
   stage: test
   tags:
     - stage-kube-newer
   image: $REPO_URL/python:3.10-slim-buster
   before_script:
-    - pip install uv
+    - pip install -U pip uv
     - uv pip install .[tests] --system
   script:
-    - PYTHONPATH=. pytest
+    - uv pip install -r requirements.txt --system
+    - PYTHONPATH=. pytest -s -v
+
+test-run311:
+  stage: test
+  tags:
+    - stage-kube-newer
+  image: python:3.11
+  before_script:
+    - pip install -U pip uv
+    - uv pip install .[tests] --system
+  script:
+    - uv pip install -r requirements.txt --system
+    - PYTHONPATH=. pytest -s -v
+
+test-run312:
+  stage: test
+  tags:
+    - stage-kube-newer
+  image: python:3.12
+  before_script:
+    - pip install -U pip uv
+    - uv pip install .[tests] --system
+  script:
+    - uv pip install -r requirements.txt --system
+    - PYTHONPATH=. pytest -s -v
+
+test-run313:
+  stage: test
+  tags:
+    - stage-kube-newer
+  image: python:3.13
+  before_script:
+    - pip install -U pip uv
+    - uv pip install .[tests] --system
+  script:
+    - uv pip install -r requirements.txt --system
+    - PYTHONPATH=. pytest -s -v
+
+test-run314:
+  stage: test
+  tags:
+    - stage-kube-newer
+  image: python:3.14
+  before_script:
+    - pip install -U pip uv
+    - uv pip install .[tests] --system
+  script:
+    - uv pip install -r requirements.txt --system
+    - PYTHONPATH=. pytest -s -v
 
 ###############################################################
 # Release Stage
@@ -54,6 +104,12 @@ release-pypi:
   tags:
     - stage-kube-newer
   script:
+    - pip3 install -q packaging setuptools twine
     # release to internal pypi but do not tag yet
-    - pip3 install -q packaging setuptools
-    - e2e release --remote https://github.com/polyswarm/polyswarm_engine.git
+    - e2e release --skip-tag --remote https://github.com/polyswarm/polyswarm_engine.git
+    # release to public pypi and tag
+    - e2e release
+      -u $PUBLIC_TWINE_USERNAME
+      -p $PUBLIC_TWINE_PASSWORD
+      -r $PUBLIC_TWINE_REPOSITORY_URL
+      --remote https://github.com/polyswarm/polyswarm_engine.git
