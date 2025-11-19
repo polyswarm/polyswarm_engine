@@ -1,5 +1,5 @@
 # flake8: noqa
-__VERSION__ = '3.1.1'
+__VERSION__ = '3.2.0'
 
 from .bidutils import (
     bid_max,
