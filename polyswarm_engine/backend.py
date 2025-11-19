@@ -273,7 +273,7 @@ class CeleryBackend:
         )
 
     def _create_analyze_task(self):
-        @CeleryBackend.app.task(name='polyswarm_engine.celery_backend.analyze_task')
+        @CeleryBackend.app.task(name='psengine.celery_backend.analyze_task')
         def analyze_task(bounty):
             return self.process_bounty(bounty)
 
