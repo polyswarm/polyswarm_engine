@@ -44,7 +44,21 @@ def rescale_to_bid(bounty: 'Bounty', value: 't.SupportsInt', min=0, max=100) -> 
 
 
 def dni_to_bid(bounty: 'Bounty', value: str) -> 'Bid':
-    """Transform string value from the None / Low / Med / High scale to a bid"""
+    """Transform string value from the None / Low / Med / High scale to a bid
+
+    From: https://www.dni.gov/files/documents/ICD/ICD_203_TA_Analytic_Standards_21_Dec_2022.pdf
+
+    | DNI Scale                               | Polyswarm Bid |
+    |-----------------------------------------+---------------|
+    | Not Specified                           | Not Specified |
+    | Almost No Chance / Remote               |             5 |
+    | Very Unlikely / Highly Improbable       |            15 |
+    | Unlikely / Improbable                   |            30 |
+    | Roughly Even Chance / Roughly Even Odds |            50 |
+    | Likely / Probable                       |            70 |
+    | Very Likely / Highly Probable           |            85 |
+    | Almost Certain / Nearly Certain         |            95 |to appropriate bid amounts.
+    """
     value = value.lower()
 
     if value == "none":
