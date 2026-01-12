@@ -2,10 +2,6 @@
 #    uv pip compile pyproject.toml --extra tests --extra web -o requirements.txt
 amqp==5.3.1
     # via kombu
-backports-zoneinfo[tzdata]==0.2.1
-    # via
-    #   celery
-    #   kombu
 billiard==4.2.2
     # via celery
 blinker==1.8.2
@@ -16,19 +12,15 @@ certifi==2025.11.12
     # via requests
 charset-normalizer==3.4.4
     # via requests
-cli-exit-tools==1.2.7
-    # via pathlib3x
 click==8.1.8
     # via
     #   polyswarm-engine (pyproject.toml)
     #   celery
-    #   cli-exit-tools
     #   click-didyoumean
     #   click-log
     #   click-plugins
     #   click-repl
     #   flask
-    #   pathlib3x
 click-didyoumean==0.3.1
     # via celery
 click-log==0.4.0
@@ -47,8 +39,6 @@ gunicorn==23.0.0
     # via polyswarm-engine (pyproject.toml)
 idna==3.11
     # via requests
-importlib-metadata==8.5.0
-    # via flask
 iniconfig==2.1.0
     # via pytest
 isort==5.13.2
@@ -59,8 +49,6 @@ jinja2==3.1.6
     # via flask
 kombu==5.5.4
     # via celery
-lib-detect-testenv==2.0.8
-    # via cli-exit-tools
 markupsafe==2.1.5
     # via
     #   jinja2
@@ -98,20 +86,12 @@ requests==2.32.4
     # via polyswarm-engine (pyproject.toml)
 six==1.17.0
     # via python-dateutil
-tomli==2.4.0
-    # via
-    #   mypy
-    #   pytest
-    #   yapf
 types-requests==2.32.0.20241016
     # via polyswarm-engine (pyproject.toml)
 typing-extensions==4.13.2
-    # via
-    #   exceptiongroup
-    #   mypy
-    #   python-json-logger
+    # via mypy
 tzdata==2025.2
-    # via backports-zoneinfo
+    # via kombu
 urllib3==2.2.3
     # via
     #   requests
@@ -127,5 +107,3 @@ werkzeug==3.0.6
     # via flask
 yapf==0.43.0
     # via polyswarm-engine (pyproject.toml)
-zipp==3.20.2
-    # via importlib-metadata
