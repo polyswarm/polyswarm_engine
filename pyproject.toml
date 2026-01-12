@@ -24,7 +24,7 @@ Homepage = "https://github.com/polyswarm/polyswarm_engine"
 
 [project.optional-dependencies]
 tests = [
-    "pathlib3x",
+    "pathlib3x; python_version < '3.10'",
     "flake8",
     "isort",
     "mypy",
