@@ -98,3 +98,24 @@ split_before_dot = "true"
 
 [tool.setuptools]
 include-package-data = false
+
+[tool.bumpversion]
+current_version = "3.2.0"
+commit = true
+tag = false
+sign_tags = true
+tag_name = "{new_version}"
+parse = '^(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)(?:\.dev(?P<dev>\d+))?(?:\+(?P<local>[a-z0-9]+(?:\.[a-z0-9]+)*))?$'
+serialize = [
+  "{major}.{minor}.{patch}.dev{dev}+{short_commit_sha}",
+  "{major}.{minor}.{patch}"
+]
+
+[tool.bumpversion.parts.dev]
+first_value = "0"
+optional_value = "0"
+
+[[tool.bumpversion.files]]
+filename = "polyswarm_engine/__init__.py"
+search = "__VERSION__ = '{current_version}'"
+replace = "__VERSION__ = '{new_version}'"
