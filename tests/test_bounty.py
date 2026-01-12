@@ -1,6 +1,10 @@
+from __future__ import annotations
 import contextlib
 import io
-import pathlib
+try:
+    import pathlib3x as pathlib
+except ImportError:
+    import pathlib
 import sys
 
 import pytest
