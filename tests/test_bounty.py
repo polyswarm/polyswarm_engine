@@ -1,6 +1,7 @@
+from __future__ import annotations
 import contextlib
 import io
-import pathlib
+import pathlib3x as pathlib
 import sys
 
 import pytest

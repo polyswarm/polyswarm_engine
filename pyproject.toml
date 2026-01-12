@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=80"]
+requires = ["setuptools>=70"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,7 +10,7 @@ readme = "README.md"
 authors = [
     {name = "Polyswarm Developers", email = "developers@polyswarm.io"},
 ]
-requires-python = ">=3.10,<4"
+requires-python = ">=3.8,<4"
 dependencies = [
     "celery",
     "click",
@@ -24,6 +24,7 @@ Homepage = "https://github.com/polyswarm/polyswarm_engine"
 
 [project.optional-dependencies]
 tests = [
+    "pathlib3x",
     "flake8",
     "isort",
     "mypy",
