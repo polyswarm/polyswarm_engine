@@ -10,7 +10,12 @@ import celery
 
 from polyswarm_engine import exceptions
 from polyswarm_engine.bounty import get_bounty_expiration, get_bounty_tasked_at, CANNOT_FETCH
-from polyswarm_engine.settings import PSENGINE_METADATA_ARCHTECTURE, PSENGINE_METADATA_OS, PSENGINE_DELIVERY_TASK
+from polyswarm_engine.settings import (
+    PSENGINE_METADATA_ARCHTECTURE,
+    PSENGINE_METADATA_OS,
+    PSENGINE_DELIVERY_TASK,
+    PSENGINE_DISCARD_EXPIRED_BOUNTIES,
+)
 from polyswarm_engine.constants import (
     BENIGN,
     MALICIOUS,
@@ -246,11 +251,12 @@ class CeleryBackend:
         expiration = get_bounty_expiration(bounty)
         processing_start = datetime.now(timezone.utc)
         if processing_start > expiration:
-            raise exceptions.EngineTimeoutError(
-                'Current time %s is past expiration time %s',
-                processing_start.isoformat(),
-                expiration.isoformat(),
-            )
+            if PSENGINE_DISCARD_EXPIRED_BOUNTIES.upper() in ('1', 'YES', 'TRUE'):
+                raise exceptions.EngineTimeoutError(
+                    'Current time %s is past expiration time %s',
+                    processing_start.isoformat(),
+                    expiration.isoformat(),
+                )
 
         try:
             result = self._analyze(bounty)
