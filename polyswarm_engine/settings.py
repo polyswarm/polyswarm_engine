@@ -40,3 +40,6 @@ PSENGINE_TASK_ALWAYS_EAGER: bool = bool(int(os.getenv('PSENGINE_TASK_ALWAYS_EAGE
 #: Name of the Celery task that processes the delivery of assertions and votes.
 # If empty, fallback to doing the delivery directly via HTTP
 PSENGINE_DELIVERY_TASK = os.getenv('PSENGINE_DELIVERY_TASK', '')
+
+#: Turn on (set as 1) to discard bounties arrived after the expiration.
+PSENGINE_DISCARD_EXPIRED_BOUNTIES = os.getenv('PSENGINE_DISCARD_EXPIRED_BOUNTIES', '')
