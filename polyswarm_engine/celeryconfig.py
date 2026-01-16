@@ -1,10 +1,19 @@
 import functools
 import importlib
+import io
+import os
+import sys
+import logging
 
+from celery.apps.worker import Worker
 from celery.worker.consumer import mingle, gossip
 from celery.worker.worker import WorkController
+import click
 
 import polyswarm_engine.settings
+
+logger = logging.getLogger(__name__)
+
 
 # monkey patch to enable -Ofair, the most stable during our tests
 _original_setup_defaults = WorkController.setup_defaults
@@ -16,6 +25,25 @@ WorkController.setup_defaults = _new_setup_defaults
 # monkey patch to disable mingle and gossip
 mingle.Mingle.compatible_transports = {}
 gossip.Gossip.compatible_transports = {}
+
+
+# monkey patch to make emit_banner use logging instead of print(sys.__stdout__)
+_original_emit_banner = Worker.emit_banner
+@functools.wraps(Worker.emit_banner)
+def _log_emit_banner(self):
+    original_stdout = sys.__stdout__
+    sys.__stdout__ = buffer = io.StringIO()
+    try:
+        _original_emit_banner(self)
+    finally:
+        sys.__stdout__ = original_stdout
+    banner_text = buffer.getvalue()
+    if os.getenv('LOG_FORMAT') == 'json':
+        # Celery outputs the banner as Cyan via ASCII terminal magic
+        banner_text = click.unstyle(banner_text)
+    logger.info(banner_text.lstrip())
+Worker.emit_banner = _log_emit_banner
+
 
 ##########################################
 # Celery Configuration

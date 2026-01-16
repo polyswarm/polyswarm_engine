@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "polyswarm_engine"
-version = "3.2.1"
+version = "3.2.2"
 description = "Polyswarm engine libarary"
 readme = "README.md"
 authors = [
@@ -101,7 +101,7 @@ split_before_dot = "true"
 include-package-data = false
 
 [tool.bumpversion]
-current_version = "3.2.1"
+current_version = "3.2.2"
 commit = true
 tag = false
 sign_tags = true

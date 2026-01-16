@@ -86,7 +86,7 @@ def get_logging(log_level=None, handler='console'):
             'click': {
                 'level': log_level,
                 'class': 'click_log.core.ClickHandler',
-                'formatter': 'click',
+                'formatter': 'click' if LOG_FORMAT == 'text' else LOG_FORMAT,
             },
         },
         'loggers': {
