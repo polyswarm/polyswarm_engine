@@ -42,7 +42,7 @@ class EngineManager:
             self._analyze,
             self._head,
             self._lifecycle,
-            **self.backend_kwargs,
+            backend_kwargs=self.backend_kwargs,
         )
         with self.backend.run() as backend:
             yield backend
