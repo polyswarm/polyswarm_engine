@@ -16,7 +16,7 @@ class EngineManager:
         self.config = config or dict()
         self.ctx = dict()
         self.backend: CeleryBackend|None = None
-        self.backend_kwargs = dict()
+        self.backend_kwargs = backend_kwargs or dict()
         self.cmd = CommandRegistry()
         # in case a lifecycle is not defined, use a nop context manager
         self._lifecycle = lambda: contextlib.nullcontext()
