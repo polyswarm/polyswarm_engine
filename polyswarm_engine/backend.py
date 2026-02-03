@@ -46,10 +46,14 @@ class CeleryBackend:
         lifecycle=contextlib.nullcontext,
         deliver_func=None,
         deliver_task_name=None,
+        backend_kwargs=None,
     ):
         # lazy setting the backend
         if CeleryBackend.app is None:
-            CeleryBackend.app = celery.Celery('polyswarm_engine_celery_backend', config_source=CeleryConfig())
+            config_kwargs: dict = backend_kwargs or {}
+            CeleryBackend.app = celery.Celery(
+                'polyswarm_engine_celery_backend', config_source=CeleryConfig(**config_kwargs)
+            )
 
         self.name = name
         self._analyze = analyze
